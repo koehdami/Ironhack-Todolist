@@ -75,7 +75,7 @@ const editToggle = (id, edit) => {
             <div class="input-group-append">
               <button
                 @click="taskStore.createTask(title, userStore.user.user.id); title=''"
-                class="btn btn-success ms-1"
+                class="btn btn-primary ms-1"
                 type="button"
               >
                 Create
@@ -98,7 +98,7 @@ const editToggle = (id, edit) => {
               </div>
               <div class="col d-flex justify-content-center align-items-center">
                 <input
-                  @click="taskStore.updateTaskValue(task.is_complete, task.id)"
+                  @click="taskStore.updateTaskValue(!task.is_complete, task.id)"
                   :checked="task.is_complete"
                   type="checkbox"
                   name="checkbox"
@@ -197,6 +197,6 @@ const editToggle = (id, edit) => {
 }
 
 .checkbox-round:checked {
-    background-color: #66bb6a;
+    background-color: #0d6efd;
 }
 </style>
