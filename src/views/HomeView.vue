@@ -149,7 +149,7 @@ const editToggle = (id, edit) => {
         </div>
         <div
           v-else
-          class="col-8 d-flex flex-column justify-content-center gap-2"
+          class="col-8 col-sm-4 d-flex flex-column justify-content-center gap-2"
         >
           <input class="form-control" type="text" placeholder="Write your email" v-model="email" />
           <input class="form-control" type="password" placeholder="Write your password" v-model="password" />
