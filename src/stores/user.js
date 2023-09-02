@@ -34,6 +34,7 @@ export const useUserStore = defineStore("userStore", () => {
     else {
       ("Data: ", console.log(data))
       user.value = data;
+      return data;
     }
   }
 

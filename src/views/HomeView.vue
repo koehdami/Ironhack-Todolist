@@ -8,6 +8,7 @@ const register = ref(true);
 const userStore = useUserStore();
 const taskStore = useTaskStore();
 
+
 const email = ref("");
 const password = ref("");
 const passwordConfirm = ref("");
@@ -37,9 +38,6 @@ const editToggle = (id, edit) => {
 }
 
 // editTaskTitle -> change p to input and get value from 
-
-
-taskStore.fetchTasks()
 </script>
 
 <template>
@@ -89,33 +87,37 @@ taskStore.fetchTasks()
     </div>
     <div class="container text-center border p-0">
       <div v-for="task in taskStore.tasks" class="container-fluid py-3" id="keys">
-        <div :id="'taskRow_' + task.id" class="row">
-          <div :id="'editBtn_' + task.id" class="col-2">
-            <button @click="editToggle(task.id, false)" class="btn btn-primary">Edit</button>
-          </div>
-          <div class="col">
-            <p class="d-flex justify-content-center align-items-center h-100 m-0" :id="'taskTitle_' + task.id">{{ task.title }}</p>
-          </div>
-          <div class="col d-flex justify-content-center align-items-center">
-            <input
-              @click="taskStore.updateTaskValue(task.is_complete, task.id)"
-              :checked="task.is_complete"
-              type="checkbox"
-              name="checkbox"
-              class="checkbox-round"
-              :id="'checkbox_' + task.id"
-            />
-          </div>
-        </div>
-        <div :id="'taskRowEdit_' + task.id" class="d-none">
-          <div class="col-sm-4 col-6">
-            <input class="form-control" type="text" :value=task.title :name="'taskInput_' + task.id">
-          </div>
-          <div :id="'saveBtn_' + task.id" class="col-sm-2 col-3 px-1">
-            <button @click="taskStore.editTask(task.id); editToggle(task.id, true)" class="btn btn-success w-100">Save</button>
-          </div>
-          <div :id="'deleteBtn_' + task.id" class="col-sm-2 col-3 px-1">
-            <button @click="taskStore.deleteTask(task.id); editToggle(task.id, true);" class="btn btn-danger w-100">Delete</button>
+        <div v-if="userStore.user">
+          <div v-if="task.user_id == userStore.user.user.id">
+            <div :id="'taskRow_' + task.id" class="row">
+              <div :id="'editBtn_' + task.id" class="col-2">
+                <button @click="editToggle(task.id, false)" class="btn btn-primary">Edit</button>
+              </div>
+              <div class="col">
+                <p class="d-flex justify-content-center align-items-center h-100 m-0" :id="'taskTitle_' + task.id">{{ task.title }}</p>
+              </div>
+              <div class="col d-flex justify-content-center align-items-center">
+                <input
+                  @click="taskStore.updateTaskValue(task.is_complete, task.id)"
+                  :checked="task.is_complete"
+                  type="checkbox"
+                  name="checkbox"
+                  class="checkbox-round"
+                  :id="'checkbox_' + task.id"
+                />
+              </div>
+            </div>
+            <div :id="'taskRowEdit_' + task.id" class="d-none">
+              <div class="col-sm-4 col-6">
+                <input class="form-control" type="text" :value=task.title :name="'taskInput_' + task.id">
+              </div>
+              <div :id="'saveBtn_' + task.id" class="col-sm-2 col-3 px-1">
+                <button @click="taskStore.editTask(task.id); editToggle(task.id, true)" class="btn btn-success w-100">Save</button>
+              </div>
+              <div :id="'deleteBtn_' + task.id" class="col-sm-2 col-3 px-1">
+                <button @click="taskStore.deleteTask(task.id); editToggle(task.id, true);" class="btn btn-danger w-100">Delete</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -132,7 +134,7 @@ taskStore.fetchTasks()
           <input class="form-control" type="text" placeholder="Write your email" v-model="email" />
           <input class="form-control" type="password" placeholder="Write your password" v-model="password" />
           <div>
-            <button class="btn btn-primary w-100" @click="userStore.loginUser(email, password)">Login</button>
+            <button class="btn btn-primary w-100" @click="userStore.loginUser(email, password).then(() => taskStore.fetchTasks())">Login</button>
             <p style="font-size:14px;" class="fw-lighter text-end my-1">
               Want to
               <button
@@ -174,12 +176,6 @@ taskStore.fetchTasks()
       </div>
     </div>
   </div>
-
-  <!-- <ul>
-    <li v-for="task in taskStore.tasks">
-      {{ task.title }} - {{ task.is_complete }}
-    </li>
-  </ul>  -->
 </template>
 
 <style>
